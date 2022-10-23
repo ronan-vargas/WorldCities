@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using WorldCities.Data;
 
 namespace WorldCities
 {
@@ -26,6 +27,12 @@ namespace WorldCities
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            // Add ApplicationDbContext and SQL Server support
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")
+                )
+            );
             services.AddHealthChecks();
         }
 
